@@ -2,33 +2,33 @@ FROM openjdk:8-jdk
 ENV VERSION=5.0.5
 
 RUN set -eux; \
-	apt-get update && apt-get upgrade -y; \
-	apt-get install -y --no-install-recommends \
-		# utilities for keeping Debian and OpenJDK CA certificates in sync
-		ca-certificates \
-		p11-kit \
-		# required packages
-		curl \
-		dirmngr \
-		gnupg \
-		lib32z1 \
+  apt-get update && apt-get upgrade -y; \
+  apt-get install -y --no-install-recommends \
+    # utilities for keeping Debian and OpenJDK CA certificates in sync
+    ca-certificates \
+    p11-kit \
+    # required packages
+    curl \
+    dirmngr \
+    gnupg \
+    lib32z1 \
     openjfx \
-		unzip \
-		wget \
-	; \
-	apt-get clean; \
-	rm -rf /var/lib/apt/lists/*_dists_*
+    unzip \
+    wget \
+  ; \
+  apt-get clean; \
+  rm -rf /var/lib/apt/lists/*_dists_*
 
 WORKDIR /app
 
 RUN set -eux; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/bin/javafxpackager /usr/local/openjdk-8/bin/; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/bin/javapackager /usr/local/openjdk-8/bin/; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar /usr/local/openjdk-8/jre/lib/ext/; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/javafx.properties /usr/local/openjdk-8/jre/lib/; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfxswt.jar /usr/local/openjdk-8/jre/lib/; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/lib/ant-javafx.jar /usr/local/openjdk-8/lib/; \
-  ln -s /usr/lib/jvm/java-8-openjdk-amd64/lib/javafx-mx.jar /usr/local/openjdk-8/lib/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/bin/javafxpackager          $JAVA_HOME/bin/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/bin/javapackager            $JAVA_HOME/bin/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar       $JAVA_HOME/jre/lib/ext/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/javafx.properties   $JAVA_HOME/jre/lib/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfxswt.jar          $JAVA_HOME/jre/lib/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/lib/ant-javafx.jar          $JAVA_HOME/lib/; \
+  ln -s /usr/lib/jvm/java-8-openjdk-amd64/lib/javafx-mx.jar           $JAVA_HOME/lib/; \
   \
   git clone -b v${VERSION} https://github.com/GravitLauncher/Launcher.git; \
   cd Launcher; \
@@ -41,4 +41,4 @@ WORKDIR /app/Launcher/LaunchServer/build/libs
 CMD ["java", "-javaagent:LaunchServer.jar", "-jar", "LaunchServer.jar"]
 
 EXPOSE 9274
-VOLUME ["/app"]
+VOLUME ["/app/Launcher/LaunchServer/build/libs"]
