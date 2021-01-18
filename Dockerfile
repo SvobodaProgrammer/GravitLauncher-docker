@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk
-ENV VERSION=5.1.8
+ENV VERSION=5.0.10
 
 RUN set -eux; \
   apt-get update && apt-get upgrade -y; \
